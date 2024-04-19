@@ -5,7 +5,6 @@ import lombok.*;
 import net.kaba.accountservice.enums.AccountType;
 import net.kaba.accountservice.models.Customer;
 
-import java.lang.reflect.Type;
 import java.time.LocalDate;
 
 @Entity @Getter @Setter @Builder @ToString @NoArgsConstructor @AllArgsConstructor
