@@ -1,5 +1,6 @@
 package net.kaba.accountservice;
 
+import net.kaba.accountservice.clients.CustomerRestClient;
 import net.kaba.accountservice.entities.BankAccount;
 import net.kaba.accountservice.enums.AccountType;
 import net.kaba.accountservice.repository.BankAccountRepository;
@@ -21,44 +22,50 @@ public class AccountServiceApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner (BankAccountRepository bankAccountRepository){
+    CommandLineRunner commandLineRunner (BankAccountRepository bankAccountRepository, CustomerRestClient customerRestClient){
+
         return args -> {
-            BankAccount account1 = BankAccount.builder()
-                    .accountId(UUID.randomUUID().toString())
-                    .balance(2000)
-                    .currency("F CFA")
-                    .createAt(LocalDate.now())
-                    .type(AccountType.CURRENT_ACCOUNT)
-                    .customerId(Long.valueOf(1))
-                    .build();
-            BankAccount account2 = BankAccount.builder()
-                    .accountId(UUID.randomUUID().toString())
-                    .balance(3000)
-                    .currency("F CFA")
-                    .createAt(LocalDate.now())
-                    .type(AccountType.CURRENT_ACCOUNT)
-                    .customerId(Long.valueOf(2))
-                    .build();
-            BankAccount account3 = BankAccount.builder()
-                    .accountId(UUID.randomUUID().toString())
-                    .balance(4000)
-                    .currency("F CFA")
-                    .createAt(LocalDate.now())
-                    .type(AccountType.SAVING_ACCOUNT)
-                    .customerId(Long.valueOf(3))
-                    .build();
-            BankAccount account4 = BankAccount.builder()
-                    .accountId(UUID.randomUUID().toString())
-                    .balance(5000)
-                    .currency("F CFA")
-                    .createAt(LocalDate.now())
-                    .type(AccountType.SAVING_ACCOUNT)
-                    .customerId(Long.valueOf(1))
-                    .build();
-            bankAccountRepository.save(account1);
-            bankAccountRepository.save(account2);
-            bankAccountRepository.save(account3);
-            bankAccountRepository.save(account4);
+            customerRestClient.allCustomers().forEach(customer -> {
+                BankAccount account1 = BankAccount.builder()
+                        .accountId(UUID.randomUUID().toString())
+                        .balance(2000)
+                        .currency("F CFA")
+                        .createAt(LocalDate.now())
+                        .type(AccountType.CURRENT_ACCOUNT)
+                        .customerId(customer.getId())
+                        .build();
+                BankAccount account2 = BankAccount.builder()
+                        .accountId(UUID.randomUUID().toString())
+                        .balance(3000)
+                        .currency("F CFA")
+                        .createAt(LocalDate.now())
+                        .type(AccountType.CURRENT_ACCOUNT)
+                        .customerId(customer.getId())
+                        .build();
+                BankAccount account3 = BankAccount.builder()
+                        .accountId(UUID.randomUUID().toString())
+                        .balance(4000)
+                        .currency("F CFA")
+                        .createAt(LocalDate.now())
+                        .type(AccountType.SAVING_ACCOUNT)
+                        .customerId(customer.getId())
+                        .build();
+                BankAccount account4 = BankAccount.builder()
+                        .accountId(UUID.randomUUID().toString())
+                        .balance(5000)
+                        .currency("F CFA")
+                        .createAt(LocalDate.now())
+                        .type(AccountType.SAVING_ACCOUNT)
+                        .customerId(customer.getId())
+                        .build();
+                bankAccountRepository.save(account1);
+                bankAccountRepository.save(account2);
+                bankAccountRepository.save(account3);
+                bankAccountRepository.save(account4);
+            });
+
+
+
         };
     }
 }
