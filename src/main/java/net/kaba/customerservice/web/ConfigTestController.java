@@ -1,5 +1,7 @@
 package net.kaba.customerservice.web;
 
+import net.kaba.customerservice.config.GlobalConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,15 @@ public class ConfigTestController {
     private int x ;
     @Value("${customer.params.y}")
     private int y ;
+
+    @Autowired
+    private GlobalConfig globalConfig ;
+
+    //pour tester
+    @GetMapping("/globalConfig")
+    public GlobalConfig globalConfig() {
+        return globalConfig ;
+    }
 
     //une methode qui retourne un Map de type string
     @GetMapping("/testConfig")
